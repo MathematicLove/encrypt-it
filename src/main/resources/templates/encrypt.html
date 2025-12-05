@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифрование - EncryptIt</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script th:src="@{/js/main.js}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <div class="logo-icon-small">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h1>Шифрование</h1>
+            </div>
+            <nav>
+                <a th:href="@{/dashboard}" class="btn btn-secondary">
+                    <i class="fas fa-home"></i>
+                    <span>На главную</span>
+                </a>
+                <a th:href="@{/decrypt}" class="btn btn-secondary">
+                    <i class="fas fa-unlock"></i>
+                    <span>Дешифрование</span>
+                </a>
+                <div class="user-info" sec:authorize="isAuthenticated()">
+                    <span th:text="${username}">Пользователь</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Выйти</span>
+                    </button>
+                </form>
+            </nav>
+        </header>
+
+        <div class="encryption-content">
+            <div class="tab-container">
+                <div class="tabs">
+                    <button class="tab active" data-tab="text-tab">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Шифрование текста</span>
+                    </button>
+                    <button class="tab" data-tab="file-tab">
+                        <i class="fas fa-file-upload"></i>
+                        <span>Шифрование файла</span>
+                    </button>
+                </div>
+
+                <div id="text-tab" class="tab-content active">
+                    <div class="tab-header">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Шифрование текста</h3>
+                    </div>
+                    <form th:action="@{/encrypt/text}" method="post" id="encryptTextForm">
+                        <div class="form-group">
+                            <label for="text">
+                                <i class="fas fa-align-left"></i>
+                                <span>Текст для шифрования</span>
+                            </label>
+                            <textarea id="text" name="text" rows="10" placeholder="Введите текст для шифрования..." required></textarea>
+                            <div class="char-counter">
+                                <span id="textCharCount">0</span> символов
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="algorithm-text">
+                                <i class="fas fa-code"></i>
+                                <span>Алгоритм шифрования</span>
+                            </label>
+                            <select id="algorithm-text" name="algorithm" required>
+                                <option value="" disabled selected>Выберите алгоритм</option>
+                                <option th:each="algorithm : ${algorithms}"
+                                        th:value="${algorithm}"
+                                        th:text="${algorithm}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="key-text">
+                                <i class="fas fa-key"></i>
+                                <span>Ключ шифрования</span>
+                            </label>
+                            <div class="key-input-wrapper">
+                                <input type="text" id="key-text" name="key" placeholder="Введите ключ шифрования" required>
+                                <button type="button" class="btn-icon" onclick="generateKey('key-text')" title="Сгенерировать ключ">
+                                    <i class="fas fa-random"></i>
+                                </button>
+                            </div>
+                            <small class="form-text">
+                                <i class="fas fa-info-circle"></i>
+                                Запомните ключ, он понадобится для дешифрования
+                            </small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            <span>Зашифровать и скачать</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div id="file-tab" class="tab-content">
+                    <div class="tab-header">
+                        <i class="fas fa-file-upload"></i>
+                        <h3>Шифрование файла</h3>
+                    </div>
+                    <form th:action="@{/encrypt/file}" method="post" enctype="multipart/form-data" id="encryptFileForm">
+                        <div class="form-group">
+                            <label for="file">
+                                <i class="fas fa-file"></i>
+                                <span>Выберите файл</span>
+                            </label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="file" name="file" required>
+                                <label for="file" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span class="file-upload-text">Выберите файл или перетащите сюда</span>
+                                    <span class="file-name" id="fileName"></span>
+                                </label>
+                            </div>
+                            <small class="form-text">
+                                <i class="fas fa-info-circle"></i>
+                                Поддерживаются изображения (.jpg, .png) и текстовые файлы
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="algorithm-file">
+                                <i class="fas fa-code"></i>
+                                <span>Алгоритм шифрования</span>
+                            </label>
+                            <select id="algorithm-file" name="algorithm" required>
+                                <option value="" disabled selected>Выберите алгоритм</option>
+                                <option th:each="algorithm : ${algorithms}"
+                                        th:value="${algorithm}"
+                                        th:text="${algorithm}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="key-file">
+                                <i class="fas fa-key"></i>
+                                <span>Ключ шифрования</span>
+                            </label>
+                            <div class="key-input-wrapper">
+                                <input type="text" id="key-file" name="key" placeholder="Введите ключ шифрования" required>
+                                <button type="button" class="btn-icon" onclick="generateKey('key-file')" title="Сгенерировать ключ">
+                                    <i class="fas fa-random"></i>
+                                </button>
+                            </div>
+                            <small class="form-text">
+                                <i class="fas fa-info-circle"></i>
+                                Запомните ключ, он понадобится для дешифрования
+                            </small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            <span>Зашифровать и скачать</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    Информация о шифровании
+                </h3>
+                <ul>
+                    <li><i class="fas fa-check"></i> Зашифрованные файлы сохраняются с суффиксом "_encrypted.txt"</li>
+                    <li><i class="fas fa-check"></i> Для дешифрования потребуется тот же алгоритм и ключ</li>
+                    <li><i class="fas fa-check"></i> Ключ должен быть достаточно сложным для обеспечения безопасности</li>
+                    <li><i class="fas fa-check"></i> Не передавайте ключ третьим лицам</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

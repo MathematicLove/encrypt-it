@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная - EncryptIt</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script th:src="@{/js/main.js}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <div class="logo-icon-small">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1>EncryptIt</h1>
+            </div>
+            <div sec:authorize="isAuthenticated()" class="header-right">
+                <div class="user-info">
+                    <span th:text="${username}">Пользователь</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Выйти</span>
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="action-cards">
+                <div class="card card-encrypt">
+                    <div class="card-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Шифрование</h3>
+                    <p>Зашифруйте текст или файлы с использованием различных алгоритмов</p>
+                    <a th:href="@{/encrypt}" class="btn btn-primary">
+                        <span>Перейти к шифрованию</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="card card-decrypt">
+                    <div class="card-icon">
+                        <i class="fas fa-unlock"></i>
+                    </div>
+                    <h3>Дешифрование</h3>
+                    <p>Расшифруйте ранее зашифрованные тексты или файлы</p>
+                    <a th:href="@{/decrypt}" class="btn btn-primary">
+                        <span>Перейти к дешифрованию</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    Доступные алгоритмы шифрования
+                </h3>
+                <div class="algorithms-grid">
+                    <div class="algorithm-item" th:each="algorithm : ${algorithms}">
+                        <i class="fas fa-code"></i>
+                        <span th:text="${algorithm}"></span>
+                    </div>
+                </div>
+                <p class="note">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Для дешифрования необходимо использовать тот же алгоритм и ключ, что и при шифровании.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

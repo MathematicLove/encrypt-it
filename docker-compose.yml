@@ -1,0 +1,80 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: encrypt-it-postgres
+    environment:
+      POSTGRES_DB: encrypt_db
+      POSTGRES_USER: ayzek
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ayzek -d encrypt_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - encrypt-it-network
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: encrypt-it-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"   # AMQP
+      - "15672:15672" # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - encrypt-it-network
+
+  # Spring Boot
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: encrypt-it-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/encrypt_db
+      SPRING_DATASOURCE_USERNAME: ayzek
+      SPRING_DATASOURCE_PASSWORD: 123
+
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+      SERVER_PORT: 8085
+
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+    ports:
+      - "8085:8085"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - encrypt-it-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+
+networks:
+  encrypt-it-network:
+    driver: bridge
+
