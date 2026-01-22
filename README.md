@@ -4,6 +4,57 @@
 
 Веб-приложение, построенное на Spring Boot. Предоставляет защищенный интерфейс для шифрования и дешифрования текстовых и бинарных файлов с использованием множества криптографических алгоритмов. Включает полную систему аутентификации пользователей и контейнеризированную инфраструктуру для развертывания.
 
+Пример использования: (можно так же шифровать изображения)!
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="./examples/HOME_PAGE.png" alt="Главная страница" style="max-width: 800px; border: 1px solid #ccc;">
+    <div style="margin-top: 10px; font-style: italic;">
+        Рис.1: Домашняя страница
+    </div>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="./examples/ENCRYPT_PAGE.png" alt="Страница шифрования" style="max-width: 800px; border: 1px solid #ccc;">
+    <div style="margin-top: 10px; font-style: italic;">
+        Рис.2: Страница шифрования данных 
+    </div>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="./examples/KEY.png" alt="Ключ шифрования" style="max-width: 800px; border: 1px solid #ccc;">
+    <div style="margin-top: 10px; font-style: italic;">
+        Рис.3: Создание ключа и выбор алгоритма шифрования 
+    </div>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="./examples/ENCRYPTED_TEXT.png" alt="Зашифрованный текст" style="max-width: 800px; border: 1px solid #ccc;">
+    <div style="margin-top: 10px; font-style: italic;">
+        Рис.4: Зашифрованный текст
+    </div>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="./examples/DECRYPT-PAGE.png" alt="Страница дешифрования" style="max-width: 800px; border: 1px solid #ccc;">
+    <div style="margin-top: 10px; font-style: italic;">
+        Рис.5: Страница дешифрования данных 
+    </div>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="./examples/DOWNLOAD_DECRYPTED_TEXT.png" alt="Скачать дешифрованный текст" style="max-width: 800px; border: 1px solid #ccc;">
+    <div style="margin-top: 10px; font-style: italic;">
+        Рис.6: Скачать дешифрованный текст 
+    </div>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="./examples/DECRYPTED_TEXT.png" alt="Дешифрованный текст" style="max-width: 800px; border: 1px solid #ccc;">
+    <div style="margin-top: 10px; font-style: italic;">
+        Рис.7: Дешифрованный текст 
+    </div>
+</div>
+
 ---
 
 ## Архитектура проекта и порядок работы
