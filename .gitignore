@@ -3,6 +3,7 @@ build/
 out/
 target/
 *.jar
+!gradle-wrapper.jar
 *.war
 *.ear
 
@@ -24,11 +25,6 @@ Thumbs.db
 *.swo
 *~
 
-# Gradle
-.gradle/
-!gradle/wrapper/
-gradle-app.setting
-gradle-wrapper.jar
 # Logs
 logs/
 *.log
