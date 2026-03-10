@@ -28,7 +28,7 @@ Thumbs.db
 .gradle/
 !gradle/wrapper/
 gradle-app.setting
-
+gradle-wrapper.jar
 # Logs
 logs/
 *.log
