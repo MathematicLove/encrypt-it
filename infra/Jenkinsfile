@@ -13,17 +13,5 @@ pipeline {
                 archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
             }
         }
-
-        stage('Start Docker') {
-            steps {
-                sh 'docker compose up -d'
-            }
-        }
-
-        stage('Stop Docker') {
-            steps {
-                sh 'docker compose down'
-            }
-        }
     }
 }
