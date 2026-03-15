@@ -1,0 +1,31 @@
+pipeline {
+    agent {
+        any
+    }
+
+    stages {
+        stage('Build Project') {
+            steps {
+                sh './gradlew clean build'
+            }
+        }
+
+        stage('Archive JAR') {
+            steps {
+                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+            }
+        }
+
+        stage('Start Docker') {
+            steps {
+                sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Stop Docker') {
+            steps {
+                sh 'docker-compose down'
+            }
+        }
+    }
+}
