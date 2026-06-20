@@ -28,7 +28,7 @@
 </div>
 
 <div style="text-align: center; margin: 40px 0;">
-    <img src="./examples/ENCRYPTED_TEXT.png" alt="Зашифрованный текст" style="max-width: 800px; border: 1px solid #ccc;">
+    <img src="./examples/ENCRYPTED_TEXT.png" style="max-width: 1200px; width: 100%;">
     <div style="margin-top: 10px; font-style: italic;">
         Рис.4: Зашифрованный текст
     </div>
@@ -49,7 +49,7 @@
 </div>
 
 <div style="text-align: center; margin: 40px 0;">
-    <img src="./examples/DECRYPTED_TEXT.png" alt="Дешифрованный текст" style="max-width: 800px; border: 1px solid #ccc;">
+    <img src="./examples/DECRYPTED_TEXT.png" alt="Дешифрованный текст" style="max-width: 1200px; width: 100%; border: 1px solid #ccc;">
     <div style="margin-top: 10px; font-style: italic;">
         Рис.7: Дешифрованный текст 
     </div>
